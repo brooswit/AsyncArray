@@ -17,7 +17,7 @@ class AsyncArray {
   }
   
   concat (array) {
-    for(index in array) {
+    for(let index in array) {
       let element = array[index]
       this.push(element)
     }
