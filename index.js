@@ -2,7 +2,7 @@ const Resolvable = require('Resolvable')
 
 class AsyncArray {
   constructor () {
-    this.lenght = 0
+    this.length = 0
     this.isClosed = false
     this._promiseToClose = new Resolvable()
     this._requestQueue = []
