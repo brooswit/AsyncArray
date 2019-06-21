@@ -3,6 +3,7 @@ const Resolvable = require('Resolvable')
 class AsyncArray {
   constructor () {
     this.isClosed = false
+    this._promiseToClose = new Resolvable()
     this._requestQueue = []
     this._elementQueue = []
   }
@@ -29,9 +30,21 @@ class AsyncArray {
   async shift () {
     return await this._get('shift')
   }
+  
+  async getAll () {
+    await this.waitUntilClosed()
+    const result = this._elementQueue
+    this._elementQueue = []
+    return result
+  }
 
+  waitUntilClosed() {
+    return this._promiseToClose
+  }
+  
   close() {
     this.isClosed = true
+    this._promiseToClose.resolve()
   }
 
   _put (action, element) {
