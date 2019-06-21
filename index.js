@@ -2,7 +2,7 @@ const Resolvable = require('Resolvable')
 
 class AsyncArray {
   constructor () {
-    this.isStopped = false
+    this.isClosed = false
     this._requestQueue = []
     this._elementQueue = []
   }
@@ -14,6 +14,13 @@ class AsyncArray {
   unshift (element) {
     return this._put('unshift', element)
   }
+  
+  concat (array) {
+    for(index in array) {
+      let element = array[index]
+      this.push(element)
+    }
+  }
 
   async pop () {
     return await this._get('pop')
@@ -23,12 +30,12 @@ class AsyncArray {
     return await this._get('shift')
   }
 
-  stop() {
-    this.isStopped = true
+  close() {
+    this.isClosed = true
   }
 
   _put (action, element) {
-    if(this.isStopped) return null
+    if(this.isClosed) return null
     this._elementQueue[action](element)
     this._processQueues()
     return element
@@ -42,7 +49,7 @@ class AsyncArray {
   }
 
   _processQueues() {
-    while(this._requestQueue.length > 0 && (this.isStopped || this._elementQueue.length > 0) ) {
+    while(this._requestQueue.length > 0 && (this.isClosed || this._elementQueue.length > 0) ) {
       const {action, resolvable} = this._requestQueue.shift()
       const element = this._elementQueue[action]()
       resolvable.resolve(element)
