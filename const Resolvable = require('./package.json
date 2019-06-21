@@ -1,0 +1,12 @@
+{
+  "name": "AsyncArray",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": "https://github.com/brooswit/asyncly",
+  "author": "Jay <jwinstead@launchdarkly.com>",
+  "license": "MIT"
+  "dependencies": {
+    "asyncly": "git+https://github.com/brooswit/Resolvable.git"
+  }
+}
