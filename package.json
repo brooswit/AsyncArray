@@ -7,6 +7,6 @@
   "author": "Jay <jwinstead@launchdarkly.com>",
   "license": "MIT",
   "dependencies": {
-    "asyncly": "git+https://github.com/brooswit/Resolvable.git"
+    "Resolvable": "git+https://github.com/brooswit/Resolvable.git"
   }
 }
