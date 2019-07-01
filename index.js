@@ -46,6 +46,7 @@ class AsyncArray {
   close() {
     this.isClosed = true
     this._promiseToClose.resolve()
+    this._processQueues()
   }
 
   _put (action, element) {
@@ -57,7 +58,7 @@ class AsyncArray {
   }
 
   async _get (action) {
-    this.length --
+    this.length = Math.max(0, this.length -1)
     const resolvable = new Resolvable()
     this._requestQueue.push({ action, resolvable })
     this._processQueues()
@@ -67,11 +68,8 @@ class AsyncArray {
   _processQueues() {
     while(this._requestQueue.length > 0 && (this.isClosed || this._elementQueue.length > 0) ) {
       const request = this._requestQueue.shift()
-      let element = undefined
-      if (request) {
-        const {action, resolvable} = request
-        element = this._elementQueue[action]()
-      }
+      const {action, resolvable} = request
+      const element = this._elementQueue[action]()
       resolvable.resolve(element)
     }
   }
