@@ -66,8 +66,12 @@ class AsyncArray {
 
   _processQueues() {
     while(this._requestQueue.length > 0 && (this.isClosed || this._elementQueue.length > 0) ) {
-      const {action, resolvable} = this._requestQueue.shift()
-      const element = this._elementQueue[action]()
+      const request = this._requestQueue.shift()
+      let element = undefined
+      if (request) {
+        const {action, resolvable} = request
+        element = this._elementQueue[action]()
+      }
       resolvable.resolve(element)
     }
   }
